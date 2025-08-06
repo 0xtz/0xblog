@@ -34,11 +34,14 @@ export default function HeroSection() {
 
         <div className="flex justify-center gap-3">
           <Button asChild className="shadow-sm transition-shadow hover:shadow">
-            <Link href="/articles">Read more ...</Link>
+            <Link aria-label="Read more articles" href="/articles">
+              Read more ...
+            </Link>
           </Button>
 
           <Button asChild className="group" variant="outline">
             <Link
+              aria-label="About me"
               href="https://0xtz.me"
               rel="noopener noreferrer"
               target="_blank"
@@ -55,67 +58,48 @@ export default function HeroSection() {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
-              className={cn(
-                buttonVariants({ variant: "outline" }),
-                "group flex aspect-square h-12 items-center justify-center p-0"
-              )}
-              href="#"
-            >
-              <Image
-                alt="shadcn/ui logo"
-                className="h-6 saturate-0 transition-all group-hover:saturate-100"
-                height={100}
-                src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcn-ui-icon.svg"
-                width={100}
-              />
-            </a>
-            <a
-              className={cn(
-                buttonVariants({ variant: "outline" }),
-                "group flex aspect-square h-12 items-center justify-center p-0"
-              )}
-              href="#"
-            >
-              <Image
-                alt="TypeScript logo"
-                className="h-6 saturate-0 transition-all group-hover:saturate-100"
-                height={100}
-                src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/typescript-icon.svg"
-                width={100}
-              />
-            </a>
-
-            <a
-              className={cn(
-                buttonVariants({ variant: "outline" }),
-                "group flex aspect-square h-12 items-center justify-center p-0"
-              )}
-              href="#"
-            >
-              <Image
-                alt="React logo"
-                className="h-6 saturate-0 transition-all group-hover:saturate-100"
-                height={100}
-                src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/react-icon.svg"
-                width={100}
-              />
-            </a>
-            <a
-              className={cn(
-                buttonVariants({ variant: "outline" }),
-                "group flex aspect-square h-12 items-center justify-center p-0"
-              )}
-              href="#"
-            >
-              <Image
-                alt="Tailwind CSS logo"
-                className="h-6 saturate-0 transition-all group-hover:saturate-100"
-                height={100}
-                src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/tailwind-icon.svg"
-                width={100}
-              />
-            </a>
+            {[
+              {
+                label: "shadcn/ui",
+                href: "https://ui.shadcn.com",
+                src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcn-ui-icon.svg",
+              },
+              {
+                label: "TypeScript",
+                href: "https://www.typescriptlang.org/",
+                src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/typescript-icon.svg",
+              },
+              {
+                label: "React",
+                href: "https://react.dev/",
+                src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/react-icon.svg",
+              },
+              {
+                label: "Tailwind CSS",
+                href: "https://tailwindcss.com/",
+                src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/tailwind-icon.svg",
+              },
+            ].map(({ label, href, src }) => {
+              return (
+                <Link
+                  aria-label={label}
+                  className={cn(
+                    buttonVariants({ variant: "outline" }),
+                    "group flex aspect-square h-12 items-center justify-center p-0"
+                  )}
+                  href={href}
+                  key={label}
+                >
+                  <Image
+                    alt={label}
+                    className="h-6 saturate-0 transition-all group-hover:saturate-100"
+                    height={100}
+                    src={src}
+                    width={100}
+                  />
+                </Link>
+              )
+            })}
           </div>
         </div>
       </div>

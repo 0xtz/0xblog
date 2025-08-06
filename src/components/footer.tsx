@@ -19,6 +19,7 @@ export default function AppFooter() {
           &copy; {new Date().getFullYear()} 0xBlog. All rights reserved. |
           created by{" "}
           <Link
+            aria-label="0xtz's website"
             className="bg-gradient-to-r from-sky-400 via-violet-600 to-fuchsia-500 bg-clip-text text-transparent"
             href="https://0xtz.me"
             rel="noopener noreferrer"
@@ -31,7 +32,9 @@ export default function AppFooter() {
         <ul className="order-1 flex flex-col gap-4 md:order-2 md:flex-row md:gap-8">
           {links.map((link) => (
             <li className="hover:text-primary" key={link.href}>
-              <Link href={link.href}>{link.name}</Link>
+              <Link aria-label={link.name} href={link.href}>
+                {link.name}
+              </Link>
             </li>
           ))}
         </ul>

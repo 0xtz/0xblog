@@ -1,4 +1,4 @@
-import fs from "node:fs"
+import fs from "node:fs/promises"
 import path from "node:path"
 
 import { isAfter, isBefore, parse } from "date-fns"
@@ -18,29 +18,31 @@ const mdExtensionRegex = /\.md$/
 
 // get all articles sorted by date (newest first)
 // preview: if true, removes markdown formatting from content
-export function getSortedArticles(preview = false): TArticle[] {
-  const fileNames = fs.readdirSync(articlesDirectory)
+export async function getSortedArticles(preview = false): Promise<TArticle[]> {
+  const fileNames = await fs.readdir(articlesDirectory)
 
-  const allArticlesData = fileNames.map((fileName) => {
-    // remove .md extension to get article id
-    const id = fileName.replace(mdExtensionRegex, "")
+  const allArticlesData = await Promise.all(
+    fileNames.map(async (fileName) => {
+      // remove .md extension to get article id
+      const id = fileName.replace(mdExtensionRegex, "")
 
-    const fullPath = path.join(articlesDirectory, fileName)
-    const fileContents = fs.readFileSync(fullPath, "utf-8")
+      const fullPath = path.join(articlesDirectory, fileName)
+      const fileContents = await fs.readFile(fullPath, "utf-8")
 
-    const matterResult = matter(fileContents)
+      const matterResult = matter(fileContents)
 
-    return {
-      id,
-      title: matterResult.data.title,
-      date: matterResult.data.date,
-      category: matterResult.data.category,
-      // strip markdown if preview is true
-      content: preview
-        ? stripMarkdown(matterResult.content)
-        : matterResult.content,
-    }
-  })
+      return {
+        id,
+        title: matterResult.data.title,
+        date: matterResult.data.date,
+        category: matterResult.data.category,
+        // strip markdown if preview is true
+        content: preview
+          ? stripMarkdown(matterResult.content)
+          : matterResult.content,
+      }
+    })
+  )
 
   return allArticlesData.sort((a, b) => {
     const dateOne = parse(a.date, "dd-MM-yyyy", new Date())
@@ -61,10 +63,10 @@ export function getSortedArticles(preview = false): TArticle[] {
 
 // group articles by category
 // preview: if true, removes markdown formatting from content
-export function getCategorizedArticles(
+export async function getCategorizedArticles(
   preview = false
-): Record<string, TArticle[]> {
-  const sortedArticles = getSortedArticles(preview)
+): Promise<Record<string, TArticle[]>> {
+  const sortedArticles = await getSortedArticles(preview)
   const categorizedArticles: Record<string, TArticle[]> = {}
 
   for (const article of sortedArticles) {
@@ -85,36 +87,46 @@ export async function getArticleBySlug(
   const fullPath = path.join(articlesDirectory, `${slug}.md`)
 
   // check if file exists
-  if (!fs.existsSync(fullPath)) {
+  if (
+    !(await fs
+      .access(fullPath)
+      .then(() => true)
+      .catch(() => false))
+  ) {
     return
   }
 
-  const fileContents = fs.readFileSync(fullPath, "utf-8")
+  try {
+    const fileContents = await fs.readFile(fullPath, "utf-8")
 
-  const matterResult = matter(fileContents)
+    const matterResult = matter(fileContents)
 
-  // convert markdown to html
-  const processedContent = await remark()
-    .use(gfm)
-    .use(toc)
-    .use(html)
-    .use(rehypeSlug)
-    .use(rehypeHighlight)
-    .process(matterResult.content)
+    // convert markdown to html
+    const processedContent = await remark()
+      .use(gfm)
+      .use(toc)
+      .use(html)
+      .use(rehypeSlug)
+      .use(rehypeHighlight)
+      .process(matterResult.content)
 
-  const contentHtml = processedContent.toString()
+    const contentHtml = processedContent.toString()
 
-  return {
-    id: slug,
-    title: matterResult.data.title,
-    content: contentHtml,
-    date: matterResult.data.date,
-    category: matterResult.data.category,
+    return {
+      id: slug,
+      title: matterResult.data.title,
+      content: contentHtml,
+      date: matterResult.data.date,
+      category: matterResult.data.category,
+    }
+  } catch {
+    // File doesn't exist or other error
+    return
   }
 }
 
 // get the most recent articles with clean text (no markdown)
-export function getLatestArticles(limit = 6): TArticle[] {
-  const sortedArticles = getSortedArticles(true)
+export async function getLatestArticles(limit = 6): Promise<TArticle[]> {
+  const sortedArticles = await getSortedArticles(true)
   return sortedArticles.slice(0, limit)
 }

@@ -38,3 +38,5 @@ export function stripMarkdown(text: string): string {
       .trim()
   )
 }
+
+export const BASE_URL = "https://0xblog-rose.vercel.app"

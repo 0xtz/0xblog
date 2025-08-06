@@ -1,9 +1,13 @@
+import type { Metadata } from "next"
 import { Badge } from "@/components/ui/badge"
 import { getSortedArticles } from "@/lib/articles"
+import { generateArticlesListSEO } from "@/lib/seo"
 import ArticleListItem from "../_components/article-list"
 
-export default function ArticlesPage() {
-  const articles = getSortedArticles(true)
+export const metadata: Metadata = generateArticlesListSEO()
+
+export default async function ArticlesPage() {
+  const articles = await getSortedArticles(true)
 
   return (
     <section className="py-32">

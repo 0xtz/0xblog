@@ -20,12 +20,16 @@ export default function NotFound() {
 
         {/* action buttons */}
         <div className="flex flex-col justify-center gap-3 sm:flex-row">
-          <Button asChild>
-            <Link href="/">go home</Link>
+          <Button aria-label="Go to homepage" asChild>
+            <Link aria-label="Go to homepage" href="/">
+              go home
+            </Link>
           </Button>
 
-          <Button asChild variant="outline">
-            <Link href="/articles">browse articles</Link>
+          <Button aria-label="Browse articles" asChild variant="outline">
+            <Link aria-label="Browse articles" href="/articles">
+              browse articles
+            </Link>
           </Button>
         </div>
       </div>

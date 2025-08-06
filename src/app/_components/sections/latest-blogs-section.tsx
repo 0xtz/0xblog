@@ -24,7 +24,7 @@ export async function LatestBlogsSection() {
           </h2>
 
           <Button asChild className="w-full sm:w-auto" variant="link">
-            <Link href="/articles">
+            <Link aria-label="View all articles" href="/articles">
               View all articles
               <ArrowRight className="ml-2 size-4" />
             </Link>
@@ -55,7 +55,7 @@ export function LatestBlogsSectionSkeleton() {
           </h2>
 
           <Button asChild className="w-full sm:w-auto" variant="link">
-            <Link href="/articles">
+            <Link aria-label="View all articles" href="/articles">
               View all articles
               <ArrowRight className="ml-2 size-4" />
             </Link>

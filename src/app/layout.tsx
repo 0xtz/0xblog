@@ -4,6 +4,7 @@ import { Geist_Mono, Martian_Mono } from "next/font/google"
 import "./globals.css"
 import dynamic from "next/dynamic"
 import NavBar from "@/components/nav-bar"
+import { defaultSEO } from "@/lib/seo"
 import { ThemeProvider } from "@/providers/theme-provider"
 import { Banner } from "./_components/banner"
 
@@ -21,10 +22,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 })
 
-export const metadata: Metadata = {
-  title: "0xBlog",
-  description: "0xBlog is a blog about tech & things.",
-}
+export const metadata: Metadata = defaultSEO
 
 export default function RootLayout({
   children,

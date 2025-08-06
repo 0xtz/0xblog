@@ -10,6 +10,7 @@ export default function ArticleListItem({ article }: { article: TArticle }) {
     <Card className="grid grid-rows-[auto_auto_1fr_auto] pt-0">
       <div className="aspect-16/9 w-full">
         <Link
+          aria-label={`Read ${article.title}`}
           className="fade-in transition-opacity duration-200 hover:opacity-70"
           href={`/articles/${article.id}`}
         >
@@ -26,7 +27,12 @@ export default function ArticleListItem({ article }: { article: TArticle }) {
       <CardHeader>
         <ViewTransition exit="auto" name={`article-list-title-${article.id}`}>
           <h3 className="text-balance font-semibold text-lg hover:underline md:text-xl">
-            <Link href={`/articles/${article.id}`}>{article.title}</Link>
+            <Link
+              aria-label={`Read ${article.title}`}
+              href={`/articles/${article.id}`}
+            >
+              {article.title}
+            </Link>
           </h3>
         </ViewTransition>
       </CardHeader>
@@ -37,6 +43,7 @@ export default function ArticleListItem({ article }: { article: TArticle }) {
 
       <CardFooter>
         <Link
+          aria-label={`Read ${article.title}`}
           className="flex items-center text-foreground hover:underline"
           href={`/articles/${article.id}`}
         >
