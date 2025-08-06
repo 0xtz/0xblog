@@ -24,7 +24,7 @@ export default function ArticleListItem({ article }: { article: TArticle }) {
       </div>
 
       <CardHeader>
-        <ViewTransition exit="auto" name="article-title">
+        <ViewTransition exit="auto" name={`article-list-title-${article.id}`}>
           <h3 className="text-balance font-semibold text-lg hover:underline md:text-xl">
             <Link href={`/articles/${article.id}`}>{article.title}</Link>
           </h3>

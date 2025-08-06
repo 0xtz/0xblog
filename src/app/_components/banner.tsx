@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 
 export function Banner({
   title = "V0 is now available!",
-  description = "We ll Releas moreeee sooon",
+  description = "We'll release moreeee soooon",
   defaultVisible = true,
   children,
 }: Readonly<
