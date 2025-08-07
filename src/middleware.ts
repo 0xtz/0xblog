@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 
 const allowedOrigins = [
+  "http://localhost:9990",
   "https://0xtz.me",
   "https://blog.0xtz.me",
   "https://0xblog-rose.vercel.app",
