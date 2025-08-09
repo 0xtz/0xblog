@@ -4,10 +4,12 @@ import path from "node:path"
 import { isAfter, isBefore, parse } from "date-fns"
 import matter from "gray-matter"
 import rehypeHighlight from "rehype-highlight"
+import rehypeRaw from "rehype-raw"
 import rehypeSlug from "rehype-slug"
+import rehypeStringify from "rehype-stringify"
 import { remark } from "remark"
 import gfm from "remark-gfm"
-import html from "remark-html"
+import remarkRehype from "remark-rehype"
 import toc from "remark-toc"
 import type { TArticle } from "./types"
 import { stripMarkdown } from "./utils"
@@ -105,9 +107,14 @@ export async function getArticleBySlug(
     const processedContent = await remark()
       .use(gfm)
       .use(toc)
-      .use(html)
+      // Convert Markdown to HTML AST and allow raw HTML inside Markdown
+      .use(remarkRehype, { allowDangerousHtml: true })
+      // Parse and include any raw HTML nodes from Markdown into the AST
+      .use(rehypeRaw)
       .use(rehypeSlug)
       .use(rehypeHighlight)
+      // Stringify to HTML while allowing dangerous HTML we trust from our content pipeline
+      .use(rehypeStringify, { allowDangerousHtml: true })
       .process(matterResult.content)
 
     const contentHtml = processedContent.toString()
