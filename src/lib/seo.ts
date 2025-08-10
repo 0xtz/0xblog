@@ -42,7 +42,7 @@ export const defaultSEO: Metadata = {
       "Discover the latest trends, tips, and best practices in modern web development. From UI components to design systems, stay updated with our expert insights.",
     images: [
       {
-        url: `${BASE_URL}/og-image.jpg`,
+        url: `${BASE_URL}/api/og`,
         width: 1200,
         height: 630,
         alt: "0xBlog - Tech & Development Blog",
@@ -54,7 +54,7 @@ export const defaultSEO: Metadata = {
     title: "0xBlog - Tech & Development Blog",
     description:
       "Discover the latest trends, tips, and best practices in modern web development.",
-    images: [`${BASE_URL}/og-image.jpg`],
+    images: [`${BASE_URL}/api/og`],
     creator: "@0xtz_",
   },
   robots: {
@@ -80,7 +80,11 @@ export const defaultSEO: Metadata = {
 export function generateArticleSEO(article: TArticle): Metadata {
   const articleUrl = `${BASE_URL}/articles/${article.id}`
   const articleDescription = article.content
-    ? `${article.content.replace(/<[^>]*>/g, "").slice(0, 160)}...`
+    ? `${article.content
+        .replace(/<[^>]*>/g, "")
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, 160)}...`
     : `Read about ${article.title} on 0xBlog`
 
   return {
@@ -91,31 +95,31 @@ export function generateArticleSEO(article: TArticle): Metadata {
     alternates: {
       canonical: articleUrl,
     },
-    // openGraph: {
-    //   type: "article",
-    //   url: articleUrl,
-    //   title: article.title,
-    //   description: articleDescription,
-    //   siteName: "0xBlog",
-    //   publishedTime: article.date,
-    //   authors: ["0xtz"],
-    //   section: article.category,
-    //   images: [
-    //     {
-    //       url: `${BASE_URL}/articles/${article.id}/og-image.jpg`,
-    //       width: 1200,
-    //       height: 630,
-    //       alt: article.title,
-    //     },
-    //   ],
-    // },
-    // twitter: {
-    //   card: "summary_large_image",
-    //   title: article.title,
-    //   description: articleDescription,
-    //   images: [`${BASE_URL}/articles/${article.id}/og-image.jpg`],
-    //   creator: "@0xtz_",
-    // },
+    openGraph: {
+      type: "article",
+      url: articleUrl,
+      title: article.title,
+      description: articleDescription,
+      siteName: "0xBlog",
+      publishedTime: article.date,
+      authors: ["0xtz"],
+      section: article.category,
+      images: [
+        {
+          url: `${BASE_URL}/api/og?title=${encodeURIComponent(article.title)}`,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: articleDescription,
+      images: [`${BASE_URL}/api/og?title=${encodeURIComponent(article.title)}`],
+      creator: "@0xtz_",
+    },
     robots: {
       index: true,
       follow: true,
@@ -171,9 +175,13 @@ export function generateArticleStructuredData(article: TArticle) {
     "@type": "BlogPosting",
     headline: article.title,
     description: article.content
-      ? `${article.content.replace(/<[^>]*>/g, "").slice(0, 160)}...`
+      ? `${article.content
+          .replace(/<[^>]*>/g, "")
+          .replace(/\s+/g, " ")
+          .trim()
+          .slice(0, 160)}...`
       : `Read about ${article.title} on 0xBlog`,
-    image: `${BASE_URL}/articles/${article.id}/og-image.jpg`,
+    image: `${BASE_URL}/api/og?title=${encodeURIComponent(article.title)}`,
     author: {
       "@type": "Person",
       name: "0xtz",
@@ -184,7 +192,7 @@ export function generateArticleStructuredData(article: TArticle) {
       name: "0xBlog",
       logo: {
         "@type": "ImageObject",
-        url: `${BASE_URL}/logo.png`,
+        url: `${BASE_URL}/api/og`,
       },
     },
     datePublished: article.date,
@@ -211,7 +219,7 @@ export function generateBlogStructuredData() {
       name: "0xBlog",
       logo: {
         "@type": "ImageObject",
-        url: `${BASE_URL}/logo.png`,
+        url: `${BASE_URL}/api/og`,
       },
     },
     author: {
