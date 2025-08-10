@@ -3,7 +3,7 @@ import path from "node:path"
 
 import { isAfter, isBefore, parse } from "date-fns"
 import matter from "gray-matter"
-import rehypeHighlight from "rehype-highlight"
+import rehypePrettyCode from "rehype-pretty-code"
 import rehypeRaw from "rehype-raw"
 import rehypeSlug from "rehype-slug"
 import rehypeStringify from "rehype-stringify"
@@ -40,7 +40,7 @@ export async function getSortedArticles(preview = false): Promise<TArticle[]> {
         category: matterResult.data.category,
         // strip markdown if preview is true
         content: preview
-          ? stripMarkdown(matterResult.content)
+          ? stripMarkdown(matterResult.content?.slice(0, 100))
           : matterResult.content,
       }
     })
@@ -112,7 +112,10 @@ export async function getArticleBySlug(
       // Parse and include any raw HTML nodes from Markdown into the AST
       .use(rehypeRaw)
       .use(rehypeSlug)
-      .use(rehypeHighlight)
+      .use(rehypePrettyCode, {
+        theme: "everforest-dark",
+        defaultLang: "typescript",
+      })
       // Stringify to HTML while allowing dangerous HTML we trust from our content pipeline
       .use(rehypeStringify, { allowDangerousHtml: true })
       .process(matterResult.content)

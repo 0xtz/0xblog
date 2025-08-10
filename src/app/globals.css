@@ -662,15 +662,15 @@
 
 /* table styles */
 table {
-  @apply w-full border-collapse border border-border my-4;
+  @apply my-4 w-full border-collapse border border-border;
 }
 
-th,
-td {
+table th,
+table td {
   @apply border border-border px-4 py-2 text-left;
 }
 
-th {
+table th {
   @apply bg-muted font-semibold;
 }
 

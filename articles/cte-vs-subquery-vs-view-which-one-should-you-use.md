@@ -2,7 +2,7 @@
 title: "CTE vs Subquery vs View: Which One Should You Use?"
 description: "A comprehensive guide to understanding when to use Common Table Expressions (CTEs), subqueries, and views in SQL"
 date: "07-08-2025"
-tags: ["sql", "database", "performance", "optimization"]
+category: "database"
 ---
 
 # CTE vs Subquery vs View: Which One Should You Use?

@@ -15,7 +15,7 @@ export default function AppFooter() {
   return (
     <div className="container mx-auto mt-32">
       <div className="flex flex-col justify-between gap-4 border-t py-8 font-medium text-muted-foreground text-xs md:flex-row md:items-center md:text-left">
-        <p className="order-2 lg:order-1">
+        <p className="order-2 text-balance lg:order-1">
           &copy; {new Date().getFullYear()} 0xBlog. All rights reserved. |
           created by{" "}
           <Link
