@@ -2,13 +2,21 @@ import { ArrowRight } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { unstable_ViewTransition as ViewTransition } from "react"
+import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import type { TArticle } from "@/lib/types"
 
 export default function ArticleListItem({ article }: { article: TArticle }) {
   return (
     <Card className="grid grid-rows-[auto_auto_1fr_auto] pt-0">
-      <div className="aspect-16/9 w-full">
+      <div className="relative aspect-16/9 w-full">
+        <Badge
+          className="pointer-events-none absolute top-4 left-4 z-10"
+          variant="secondary"
+        >
+          {article.category}
+        </Badge>
+
         <Link
           aria-label={`Read ${article.title}`}
           className="fade-in transition-opacity duration-200 hover:opacity-70"
@@ -24,7 +32,7 @@ export default function ArticleListItem({ article }: { article: TArticle }) {
         </Link>
       </div>
 
-      <CardHeader>
+      <CardHeader className="flex-shrink-0">
         <ViewTransition exit="auto" name={`article-list-title-${article.id}`}>
           <h3 className="text-balance font-semibold text-lg hover:underline md:text-xl">
             <Link
@@ -37,11 +45,13 @@ export default function ArticleListItem({ article }: { article: TArticle }) {
         </ViewTransition>
       </CardHeader>
 
-      <CardContent>
-        <p className="line-clamp-3 text-muted-foreground">{article.content}</p>
+      <CardContent className="min-h-0 w-full flex-1 space-y-4">
+        <p className="line-clamp-3 text-pretty text-muted-foreground">
+          {article.content}
+        </p>
       </CardContent>
 
-      <CardFooter>
+      <CardFooter className="flex-shrink-0">
         <Link
           aria-label={`Read ${article.title}`}
           className="flex items-center text-foreground hover:underline"
