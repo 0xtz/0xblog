@@ -1,7 +1,7 @@
 import { ExternalLink } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 export default function HeroSection() {
@@ -12,6 +12,7 @@ export default function HeroSection() {
           alt="background"
           className="opacity-90 [mask-image:radial-gradient(75%_75%_at_center,white,transparent)]"
           fill
+          // spacial thanks to ShadcnBlocks 🙏🙏🙏
           src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/patterns/square-alt-grid.svg"
         />
       </div>
@@ -50,57 +51,6 @@ export default function HeroSection() {
               <ExternalLink className="ml-2 h-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </Button>
-        </div>
-
-        <div className="flex flex-col items-center gap-5">
-          <p className="font-medium text-muted-foreground text-sm lg:text-left">
-            Built with open-source technologies
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            {[
-              {
-                label: "shadcn/ui",
-                href: "https://ui.shadcn.com",
-                src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcn-ui-icon.svg",
-              },
-              {
-                label: "TypeScript",
-                href: "https://www.typescriptlang.org/",
-                src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/typescript-icon.svg",
-              },
-              {
-                label: "React",
-                href: "https://react.dev/",
-                src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/react-icon.svg",
-              },
-              {
-                label: "Tailwind CSS",
-                href: "https://tailwindcss.com/",
-                src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/tailwind-icon.svg",
-              },
-            ].map(({ label, href, src }) => {
-              return (
-                <Link
-                  aria-label={label}
-                  className={cn(
-                    buttonVariants({ variant: "outline" }),
-                    "group flex aspect-square h-12 items-center justify-center p-0"
-                  )}
-                  href={href}
-                  key={label}
-                >
-                  <Image
-                    alt={label}
-                    className="h-6 saturate-0 transition-all group-hover:saturate-100"
-                    height={100}
-                    src={src}
-                    width={100}
-                  />
-                </Link>
-              )
-            })}
-          </div>
         </div>
       </div>
     </section>

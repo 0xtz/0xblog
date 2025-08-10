@@ -28,12 +28,12 @@ export function Banner({
     <section className="w-full border-b bg-background px-4 py-3">
       <div className="flex items-center justify-between gap-2">
         <div className="flex-1 text-center">
-          <span className="text-sm">
+          <p className="text-balance text-sm">
             <span className="font-medium">{title}</span>{" "}
             <span className="text-muted-foreground">
               {description} {children}.
             </span>
-          </span>
+          </p>
         </div>
 
         <Button
