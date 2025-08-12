@@ -20,7 +20,15 @@ const mdExtensionRegex = /\.md$/
 
 // get all articles sorted by date (newest first)
 // preview: if true, removes markdown formatting from content
-export async function getSortedArticles(preview = false): Promise<TArticle[]> {
+export async function getSortedArticles({
+  preview = false,
+  limit,
+  category,
+}: {
+  preview?: boolean
+  limit?: number
+  category?: string
+}): Promise<TArticle[]> {
   const fileNames = await fs.readdir(articlesDirectory)
 
   const allArticlesData = await Promise.all(
@@ -46,7 +54,7 @@ export async function getSortedArticles(preview = false): Promise<TArticle[]> {
     })
   )
 
-  return allArticlesData.sort((a, b) => {
+  const sorted = allArticlesData.sort((a, b) => {
     const dateOne = parse(a.date, "dd-MM-yyyy", new Date())
     const dateTwo = parse(b.date, "dd-MM-yyyy", new Date())
 
@@ -61,6 +69,12 @@ export async function getSortedArticles(preview = false): Promise<TArticle[]> {
 
     return 0
   })
+
+  const filtered = category
+    ? sorted.filter((article) => article.category === category)
+    : sorted
+
+  return typeof limit === "number" ? filtered.slice(0, limit) : filtered
 }
 
 // group articles by category
@@ -68,7 +82,7 @@ export async function getSortedArticles(preview = false): Promise<TArticle[]> {
 export async function getCategorizedArticles(
   preview = false
 ): Promise<Record<string, TArticle[]>> {
-  const sortedArticles = await getSortedArticles(preview)
+  const sortedArticles = await getSortedArticles({ preview })
   const categorizedArticles: Record<string, TArticle[]> = {}
 
   for (const article of sortedArticles) {
@@ -137,6 +151,8 @@ export async function getArticleBySlug(
 
 // get the most recent articles with clean text (no markdown)
 export async function getLatestArticles(limit = 6): Promise<TArticle[]> {
-  const sortedArticles = await getSortedArticles(true)
+  const sortedArticles = await getSortedArticles({
+    preview: true,
+  })
   return sortedArticles.slice(0, limit)
 }

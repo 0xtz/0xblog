@@ -2,14 +2,16 @@ import { ChevronLeft } from "lucide-react"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { unstable_ViewTransition as ViewTransition } from "react"
+import { Suspense, unstable_ViewTransition as ViewTransition } from "react"
+import ArticleListItem from "@/app/_components/article-list"
 import {
   ArticleStructuredData,
   BreadcrumbStructuredData,
 } from "@/components/structured-data"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { getArticleBySlug } from "@/lib/articles"
+import { Skeleton } from "@/components/ui/skeleton"
+import { getArticleBySlug, getSortedArticles } from "@/lib/articles"
 import { generateArticleSEO } from "@/lib/seo"
 
 export async function generateMetadata({
@@ -48,7 +50,7 @@ export default async function ArticlePage({
 
       <BreadcrumbStructuredData article={article} />
 
-      <section className="container py-16 lg:py-32">
+      <section className="container py-16 lg:py-24">
         <div className="relative flex flex-col justify-between gap-10 lg:flex-row">
           <div className="order-2 flex w-full flex-col gap-6 lg:order-1">
             <Link
@@ -92,6 +94,78 @@ export default async function ArticlePage({
           </aside>
         </div>
       </section>
+
+      {/* related articles */}
+      <Suspense fallback={<RelatedArticlesSkeleton />}>
+        <RelatedArticles category={article.category} currentId={article.id} />
+      </Suspense>
     </>
+  )
+}
+
+async function RelatedArticles({
+  category,
+  currentId,
+  limit = 3,
+}: {
+  category: string
+  currentId: string
+  limit?: number
+}) {
+  const articles = await getSortedArticles({
+    preview: true,
+    category,
+    limit: limit + 2,
+  })
+  const related = articles.filter((a) => a.id !== currentId).slice(0, limit)
+
+  if (related.length === 0) {
+    return null
+  }
+
+  return (
+    <section className="container pb-16 lg:pb-24">
+      <div className="flex items-center justify-between gap-4 pb-6">
+        <h2 className="text-pretty font-semibold text-2xl md:text-3xl">
+          Related Articles
+        </h2>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+        {related.map((article) => (
+          <ArticleListItem article={article} key={article.id} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function RelatedArticlesSkeleton() {
+  return (
+    <section className="container pb-16 lg:pb-24">
+      <div className="flex items-center justify-between gap-4 pb-6">
+        <Skeleton className="h-7 w-48 max-w-full" />
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <div className="grid grid-rows-[auto_auto_1fr_auto] pt-0" key={index}>
+            <Skeleton className="aspect-16/9 w-full" />
+            <div className="p-6">
+              <Skeleton className="mb-2 h-6 w-full" />
+              <Skeleton className="mb-2 h-6 w-3/4" />
+            </div>
+            <div className="px-6">
+              <Skeleton className="mb-2 h-4 w-full" />
+              <Skeleton className="mb-2 h-4 w-full" />
+              <Skeleton className="h-4 w-2/3" />
+            </div>
+            <div className="p-6">
+              <Skeleton className="h-4 w-24" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
   )
 }
