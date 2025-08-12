@@ -7,7 +7,8 @@
     "build": "next build --turbopack",
     "start": "next start --port=9990",
     "lint": "next lint",
-    "format": "ultracite format"
+    "format": "ultracite format",
+    "create-article": "npx tsx scripts/create-article.ts"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.10",
