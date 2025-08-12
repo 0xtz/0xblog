@@ -6,7 +6,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = BASE_URL
 
   // Get all articles
-  const articles = await getSortedArticles()
+  const articles = await getSortedArticles({
+    preview: true,
+    limit: 1000,
+  })
 
   // Static pages
   const staticPages = [

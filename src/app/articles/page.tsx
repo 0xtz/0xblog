@@ -7,7 +7,9 @@ import ArticleListItem from "../_components/article-list"
 export const metadata: Metadata = generateArticlesListSEO()
 
 export default async function ArticlesPage() {
-  const articles = await getSortedArticles(true)
+  const articles = await getSortedArticles({
+    preview: true,
+  })
 
   return (
     <section className="py-32">
