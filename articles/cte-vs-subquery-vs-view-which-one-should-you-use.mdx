@@ -9,9 +9,9 @@ category: "database"
 
 Have you ever written an SQL query and wondered, _Wait should this be a subquery? Or maybe a view? Or is a CTE better?_
 
-In this guide, we’ll break down the differences between the three, show working code examples, and help you understand when to use each one.
+In this guide, we'll break down the differences between the three, show working code examples, and help you understand when to use each one.
 
-Here’s the database schema we’ll be using for the examples:
+Here's the database schema we'll be using for the examples:
 
 ```sql
 CREATE DATABASE company;
@@ -45,7 +45,7 @@ CREATE TABLE orders (
 A **subquery** is a query inside another query,
 often used to filter or calculate values for the outer one. You can use them in the `WHERE`, `FROM`, `SELECT`, or `HAVING` clauses.
 
-Let’s find all customers who placed an order in January 2025 with a total over 100:
+Let's find all customers who placed an order in January 2025 with a total over 100:
 
 ```sql
 SELECT
@@ -64,7 +64,7 @@ The inner query fetches the IDs of customers who meet the condition. The outer q
 
 This is easy to write for simple cases, but subqueries quickly become hard to read or maintain when things get more complex.
 
-**✅ Good for**: One-off logic  
+**✅ Good for**: One-off logic
 **❌ Bad for**: Reuse or deep nesting
 
 ---
@@ -73,7 +73,7 @@ This is easy to write for simple cases, but subqueries quickly become hard to re
 
 A **view** is a saved query that behaves like a virtual table. You define it once in your database and it's a database object that you can query like a regular table.
 
-Here’s a view that lists customers who spent more than 100 in January 2025:
+Here's a view that lists customers who spent more than 100 in January 2025:
 
 ```sql
 CREATE VIEW vw_top_customers_last_month AS
@@ -105,7 +105,7 @@ FROM
 This makes your queries cleaner and easier to reuse,
 especially when your logic is shared across reports or dashboards.
 
-**✅ Good for**: Reuse, abstraction, security (limiting columns)  
+**✅ Good for**: Reuse, abstraction, security (limiting columns)
 **❌ Bad for**: Logic used only once or that changes often
 
 ### Materialized View
@@ -114,7 +114,7 @@ A **materialized view** is like a regular view, but its results are **cached (st
 
 Unlike regular views that re-run their query on each access, materialized views store the results and need manual or scheduled refreshing.
 
-Here’s how you create a materialized view for the same top customers example:
+Here's how you create a materialized view for the same top customers example:
 
 ```sql
 CREATE MATERIALIZED VIEW mv_top_customers_last_month AS
@@ -142,7 +142,7 @@ REFRESH MATERIALIZED VIEW mv_top_customers_last_month;
 
 Materialized views are great when query speed is critical but the underlying data doesn't change very often, like in analytics and reporting.
 
-**✅ Good for**: Performance optimization, heavy queries that don’t need real-time freshness  
+**✅ Good for**: Performance optimization, heavy queries that don't need real-time freshness
 **❌ Bad for**: Data that changes frequently or needs to be always current
 
 ---
@@ -151,7 +151,7 @@ Materialized views are great when query speed is critical but the underlying dat
 
 A **CTE** is like a temporary named result set used only in the query it's defined in. You define it with the `WITH` keyword.
 
-Here’s the same logic we used in the view, but as a CTE:
+Here's the same logic we used in the view, but as a CTE:
 
 ```sql
 WITH top_customers_last_month AS (
@@ -178,7 +178,7 @@ This is perfect for breaking a complex query into logical chunks that are easier
 
 Some queries require recursion, for example, generating a sequence of dates or traversing a tree structure.
 
-Here’s a CTE that generates dates from Jan 1 to Jan 7, 2025:
+Here's a CTE that generates dates from Jan 1 to Jan 7, 2025:
 
 ```sql
 WITH RECURSIVE date_sequence AS (
@@ -191,9 +191,9 @@ WITH RECURSIVE date_sequence AS (
 SELECT * FROM date_sequence;
 ```
 
-Recursive CTEs are super handy when you don’t have a calendar table or need to walk through parent-child hierarchies.
+Recursive CTEs are super handy when you don't have a calendar table or need to walk through parent-child hierarchies.
 
-**✅ Good for**: Multi-step queries, breaking complexity, recursion  
+**✅ Good for**: Multi-step queries, breaking complexity, recursion
 **❌ Bad for**: Reuse across different queries or modules
 
 ---
@@ -229,7 +229,7 @@ Recursive CTEs are super handy when you don’t have a calendar table or need to
 🛑 Avoid subqueries when:
 
 - The logic gets nested or involves multiple joins. It quickly becomes unreadable.
-- The same logic is reused across different queries. You’ll end up copy-pasting.
+- The same logic is reused across different queries. You'll end up copy-pasting.
 - You want to debug part of the logic. Subqueries can be hard to isolate and test.
 
 ### ✅ Use a **View** when:
@@ -253,7 +253,7 @@ Recursive CTEs are super handy when you don’t have a calendar table or need to
 
 🛑 Avoid CTEs for cross-query reuse, use views instead.
 
-**Bonus**: Use a CTE when you’re building logic that might later be promoted to a view, but you're not ready yet. It keeps things flexible 😉.
+**Bonus**: Use a CTE when you're building logic that might later be promoted to a view, but you're not ready yet. It keeps things flexible 😉.
 
 ---
 
@@ -333,7 +333,7 @@ ORDER BY total_spent DESC;
 
 ## 🧠 : Conclusion
 
-There’s no one-size-fits-all answer, it depends on what you’re trying to achieve:
+There's no one-size-fits-all answer, it depends on what you're trying to achieve:
 
 > Use a **subquery** for _one-off, simple logic inside another query_.
 > Use a **view** to _abstract and reuse logic across multiple queries_.

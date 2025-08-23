@@ -2,7 +2,12 @@ import { ChevronLeft } from "lucide-react"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
+import { MDXRemote } from "next-mdx-remote/rsc"
 import { Suspense, unstable_ViewTransition as ViewTransition } from "react"
+import rehypePrettyCode from "rehype-pretty-code"
+import rehypeSlug from "rehype-slug"
+import gfm from "remark-gfm"
+import toc from "remark-toc"
 import ArticleListItem from "@/app/_components/article-list"
 import {
   ArticleStructuredData,
@@ -62,11 +67,23 @@ export default async function ArticlePage({
               Return to articles
             </Link>
 
-            <article
-              className="prose dark:prose-invert [&_table]:!block [&_table]:!w-full [&_table]:!overflow-x-auto [&_table]:!max-w-none"
-              // biome-ignore lint/security/noDangerouslySetInnerHtml: it's safe
-              dangerouslySetInnerHTML={{ __html: article?.content || "" }}
-            />
+            <article className="prose dark:prose-invert [&_table]:!block [&_table]:!w-full [&_table]:!overflow-x-auto [&_table]:!max-w-none">
+              <MDXRemote
+                options={{
+                  mdxOptions: {
+                    remarkPlugins: [gfm, toc],
+                    rehypePlugins: [
+                      rehypeSlug,
+                      [
+                        rehypePrettyCode,
+                        { theme: "everforest-dark", defaultLang: "typescript" },
+                      ],
+                    ],
+                  },
+                }}
+                source={article?.content || ""}
+              />
+            </article>
           </div>
 
           <aside className="top-10 order-1 h-fit flex-shrink-0 lg:sticky lg:order-2 lg:w-[300px] xl:w-[400px]">

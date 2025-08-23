@@ -54,19 +54,19 @@ Wrap up your article with a conclusion.
     mkdirSync(articlesDir, { recursive: true })
   }
 
-  // Create file path
-  const filePath = join(articlesDir, `${filename}.md`)
+  // Create file path (.mdx)
+  const filePath = join(articlesDir, `${filename}.mdx`)
 
   // Check if file already exists
   if (existsSync(filePath)) {
-    console.error(`❌ Article "${filename}.md" already exists!`)
+    console.error(`❌ Article "${filename}.mdx" already exists!`)
     process.exit(1)
   }
 
   // Write the file
   writeFileSync(filePath, frontmatter, "utf8")
 
-  console.log(`✅ Created article: articles/${filename}.md`)
+  console.log(`✅ Created article: articles/${filename}.mdx`)
   console.log(`📝 Title: "${articleTitle}"`)
   console.log(`📅 Date: ${date}`)
   console.log(
