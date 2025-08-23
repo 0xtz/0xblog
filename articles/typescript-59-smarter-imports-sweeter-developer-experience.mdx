@@ -73,7 +73,7 @@ Microsoft also looked at some pain points when creating a new TS project. For ex
 
 ## Support for `import defer`
 
-This new `import defer` syntax allows you to defer the import of a module until it is needed.  
+This new `import defer` syntax allows you to defer the import of a module until it is needed.
 It means you can import a module without immediately executing it and its dependencies.
 
 Let's take a look at this example:
@@ -122,14 +122,14 @@ import defer * as feature from "some-module";
 
 ## Support for `--module node20`
 
-This version brings a stable alternative to `"nodenext"` — `"node20"`.  
+This version brings a stable alternative to `"nodenext"` — `"node20"`.
 This mode is designed to model the behavior of Node.js v20. It is unlikely to have new behaviors in the future [_according to Microsoft_](https://devblogs.microsoft.com/typescript/announcing-typescript-5-9/#support-for---module-node20).
 
 It will imply a `--target` of `es2022` unless otherwise specified.
 
 ## Summary Descriptions in DOM APIs
 
-This will be super helpful for people who actually read the docs 😎.  
+This will be super helpful for people who actually read the docs 😎.
 Previously, when you hovered over many DOM APIs, you would only see a link to the MDN page.
 
 Those links are kind of useful, but they do not provide a quick summary of the API and what it does.
@@ -154,8 +154,11 @@ You needed to jump to the definition just to see what members this value had. Pr
 
 Now, in TypeScript 5.9, a preview feature called _Expandable Hovers_ or _"quick info verbosity"_ is available. If you use VS Code or any of its clones, you will see a **+** / **-** button on the left of these hover tooltips. This expands the hover to show more details about the type.
 
-<video controls autoplay muted loop width="100%">
-  <source src="https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2025/06/expandable-quick-info-1.mp4#t=0.1" type="video/mp4">
+<video controls autoPlay muted loop width="100%">
+  <source
+    src="https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2025/06/expandable-quick-info-1.mp4#t=0.1"
+    type="video/mp4"
+  />
 </video>
 
 > ⚠️ This feature is still in preview. The TypeScript team is seeking feedback from VS Code users. [Read more here #59940](https://github.com/microsoft/TypeScript/pull/59940)

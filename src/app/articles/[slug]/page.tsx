@@ -86,7 +86,7 @@ export default async function ArticlePage({
             </article>
           </div>
 
-          <aside className="top-10 order-1 h-fit flex-shrink-0 lg:sticky lg:order-2 lg:w-[300px] xl:w-[400px]">
+          <aside className="top-10 order-1 h-fit flex-shrink-0 lg:sticky lg:order-2 lg:w-[350px] xl:w-[500px]">
             <ViewTransition name={`article-detail-title-${article.id}`}>
               <h1 className="mb-5 text-balance font-bold text-3xl lg:text-4xl">
                 {article?.title}
