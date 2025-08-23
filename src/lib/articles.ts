@@ -3,20 +3,12 @@ import path from "node:path"
 
 import { isAfter, isBefore, parse } from "date-fns"
 import matter from "gray-matter"
-import rehypePrettyCode from "rehype-pretty-code"
-import rehypeRaw from "rehype-raw"
-import rehypeSlug from "rehype-slug"
-import rehypeStringify from "rehype-stringify"
-import { remark } from "remark"
-import gfm from "remark-gfm"
-import remarkRehype from "remark-rehype"
-import toc from "remark-toc"
 import type { TArticle } from "./types"
 import { stripMarkdown } from "./utils"
 
 // path to articles folder
 const articlesDirectory = path.join(process.cwd(), "articles")
-const mdExtensionRegex = /\.md$/
+const mdExtensionRegex = /\.(md|mdx)$/
 
 // get all articles sorted by date (newest first)
 // preview: if true, removes markdown formatting from content
@@ -100,15 +92,23 @@ export async function getCategorizedArticles(
 export async function getArticleBySlug(
   slug: string
 ): Promise<TArticle | undefined> {
-  const fullPath = path.join(articlesDirectory, `${slug}.md`)
+  const candidates = [
+    path.join(articlesDirectory, `${slug}.mdx`),
+    path.join(articlesDirectory, `${slug}.md`),
+  ]
 
-  // check if file exists
-  if (
-    !(await fs
-      .access(fullPath)
+  const exists = async (p: string) =>
+    fs
+      .access(p)
       .then(() => true)
-      .catch(() => false))
-  ) {
+      .catch(() => false)
+
+  let fullPath = ""
+  if (await exists(candidates[0])) {
+    fullPath = candidates[0]
+  } else if (await exists(candidates[1])) {
+    fullPath = candidates[1]
+  } else {
     return
   }
 
@@ -117,29 +117,10 @@ export async function getArticleBySlug(
 
     const matterResult = matter(fileContents)
 
-    // convert markdown to html
-    const processedContent = await remark()
-      .use(gfm)
-      .use(toc)
-      // Convert Markdown to HTML AST and allow raw HTML inside Markdown
-      .use(remarkRehype, { allowDangerousHtml: true })
-      // Parse and include any raw HTML nodes from Markdown into the AST
-      .use(rehypeRaw)
-      .use(rehypeSlug)
-      .use(rehypePrettyCode, {
-        theme: "everforest-dark",
-        defaultLang: "typescript",
-      })
-      // Stringify to HTML while allowing dangerous HTML we trust from our content pipeline
-      .use(rehypeStringify, { allowDangerousHtml: true })
-      .process(matterResult.content)
-
-    const contentHtml = processedContent.toString()
-
     return {
       id: slug,
       title: matterResult.data.title,
-      content: contentHtml,
+      content: matterResult.content,
       date: matterResult.data.date,
       category: matterResult.data.category,
     }
