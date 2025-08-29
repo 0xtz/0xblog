@@ -1,0 +1,58 @@
+---
+title: "Zed ACP Opens the Door: Gemini CLI Becomes the First Agent"
+category: "tech"
+date: "29-08-2025"
+---
+
+# Zed ACP Opens the Door: Gemini CLI Becomes the First Agent
+
+Zed has always focused on speed and flexibility. Now it is enabling AI agents inside the editor itself. The key is the **Agent Client Protocol (ACP)**, an open-source bridge built by Zed. Google's **Gemini CLI** is the first agent to connect through it.
+
+## Who Did What
+
+- **Zed** created the **Agent Client Protocol (ACP)**, an open framework that allows any AI agent to integrate into the editor.
+- **Google** built **Gemini CLI**, an open-source AI agent for terminal-based workflows. It was designed to be extensible from the start with standards like MCP, markdown instructions, themes, custom tools, configs, and telemetry.
+- **Together**, this collaboration makes Gemini CLI the first official agent to run in Zed using ACP.
+
+In just eight weeks since launch, Gemini CLI has already seen over 1,000 community pull requests, showing how quickly its ecosystem is growing.
+
+## What This Enables
+
+- **Use Gemini inside Zed**: Run `gemini` in Zed's terminal or interact with it through the new Agent Panel.
+- **Code generation and refactoring**: Write a comment, hit a hotkey, and get working code in place.
+- **Instant explanations**: Highlight confusing code or an error message to get a clear answer.
+- **Natural chat**: Ask Gemini broader questions directly in Zed's integrated terminal.
+- **Complex multi-file changes**: Gemini can add endpoints, generate tests, or refactor code across multiple files while you follow its progress in real time.
+
+When the agent finishes, Zed presents the changes in a **review interface** that works like a pull request. You can inspect diffs, accept, reject, or modify suggestions before they land in your project.
+
+You can also provide **external context** like API specs or docs, so Gemini has the knowledge it needs for harder problems.
+
+<video
+  autoPlay
+  loop
+  muted
+  playsInline
+  poster="https://storage.googleapis.com/gweb-developer-goog-blog-assets/original_videos/wagtailvideo-yjd1f8y2_thumb.jpg"
+>
+  <source
+    src="https://storage.googleapis.com/gweb-developer-goog-blog-assets/original_videos/Gemini_CLI_-_Zed_integration.mp4"
+    type="video/mp4"
+  />
+  <p>Sorry, your browser doesn't support playback for this video</p>
+</video>
+
+## Why It Matters
+
+- **Performance**: Zed's Rust foundation makes the editor fast. Adding Gemini keeps that same responsiveness while giving you AI assistance.
+- **Control**: You are never flying blind. You see edits as they happen and approve them before they go in.
+- **Extensibility**: ACP is open. Gemini is just the first agent. Any AI that supports ACP can be integrated into Zed in the future.
+- **Community-driven growth**: With Gemini CLI already attracting major community contributions, this integration is set to evolve rapidly.
+
+## Conclusion
+
+This is more than an AI plug-in. It is a new foundation. **Zed built ACP to open the door, and Google brought Gemini CLI through it as the first real-world agent.**
+
+It shows how editors and AI agents can work together without breaking the developer's flow.
+
+Check out the [ACP docs](https://github.com/zed-industries/zed) and the [Gemini CLI repo](https://github.com/google-deepmind/gemini-cli) if you want to dig deeper or even contribute.
