@@ -69,9 +69,7 @@ export const defaultSEO: Metadata = {
     },
   },
   verification: {
-    // Add your verification codes here
-    // google: "your-google-verification-code",
-    // yandex: "your-yandex-verification-code",
+    google: "TwLfRIEl8pn3Go06i05mJTvDHICAln4LzM9bqSAAHuU",
   },
   category: "technology",
 }
