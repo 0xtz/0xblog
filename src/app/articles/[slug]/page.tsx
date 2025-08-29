@@ -19,6 +19,25 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { getArticleBySlug, getSortedArticles } from "@/lib/articles"
 import { generateArticleSEO } from "@/lib/seo"
 
+// Custom link component for MDX content
+function MDXLink({ href, children, ...props }: React.ComponentProps<"a">) {
+  const isExternal = href?.startsWith("http") || href?.startsWith("//")
+
+  if (isExternal) {
+    return (
+      <a href={href} rel="noopener noreferrer" target="_blank" {...props}>
+        {children}
+      </a>
+    )
+  }
+
+  return (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  )
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -69,6 +88,9 @@ export default async function ArticlePage({
 
             <article className="prose dark:prose-invert [&_table]:!block [&_table]:!w-full [&_table]:!overflow-x-auto [&_table]:!max-w-none">
               <MDXRemote
+                components={{
+                  a: MDXLink,
+                }}
                 options={{
                   mdxOptions: {
                     remarkPlugins: [gfm, toc],
