@@ -39,4 +39,4 @@ export function stripMarkdown(text: string): string {
   )
 }
 
-export const BASE_URL = "https://0xblog-rose.vercel.app"
+export const BASE_URL = "https://blog.0xtz.me/"
