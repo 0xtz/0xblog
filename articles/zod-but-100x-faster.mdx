@@ -1,0 +1,185 @@
+---
+title: "zod but 100x faster?"
+category: "tech"
+date: "30-08-2025"
+---
+
+# zod but 100x faster? 👀
+
+We all know [Zod](https://zod.dev/) for runtime validation. But there's a new player: [ArkType](https://arktype.io/). Claims? **100x faster than Zod**, **2000x faster than Yup**, and your TypeScript types **come alive at runtime**. No extra schemas. No mismatch. Let's see why it matters.
+
+## What is ArkType?
+
+ArkType is a **TypeScript-first runtime validator**. Your types are the validator. One definition, two worlds: compile-time safety and runtime checks. Perfect for JSON, API responses, forms, or any untyped data.
+
+<video
+  autoPlay
+  loop
+  controls
+  playsInline
+  muted
+  disablePictureInPicture
+  style={{
+    width: "100%",
+    display: "block",
+    margin: "0 auto",
+    background: "black",
+  }}
+  src="https://github.com/user-attachments/assets/eaace5f0-310e-4fc8-9a95-1c0afc6fd110"
+/>
+
+## Why ArkType?
+
+Validating untyped data is unavoidable. Zod, Yup, Joi? You often write a schema and infer types separately. Arktype removes that extra step. **Isomorphism:** runtime mirrors your TS types. No duplication. No mismatch.
+
+Built on **set theory + ahead-of-time compilation**, it produces lightning-fast validators.
+
+## Runtime validation in action
+
+```ts
+import { type } from "arktype";
+
+const user = type({
+  id: "number",
+  name: "string",
+  email: /.+\@.+..+/,
+});
+
+user({
+  id: 1,
+  name: "Zack",
+  email: "[zack@proser.dev](mailto:zack@proser.dev)",
+}); // ✅ passes
+user({ id: "oops", name: "Zack", email: "not-an-email" }); // ❌ fails
+```
+
+One definition, runtime and compile-time aligned.
+
+## Advanced Type-Level Features
+
+```ts
+// Discriminated unions
+const event = type(
+  { kind: "'click'", x: "number", y: "number" } |
+    { kind: "'keydown'", key: "string", ctrlKey: "boolean" }
+);
+
+// Recursive structures
+const tree = type({ value: "string", children: "tree[]" });
+
+// Ranges
+const config = type({ port: "1<=number<=65535", timeout: "0<=number<=300000" });
+```
+
+## Key Features
+
+### ⚡ Performance
+
+- Up to 100x faster than Zod, 2000x faster than Yup
+- Ahead-of-time compiled validators
+
+### 📝 TypeScript-friendly syntax
+
+- No new DSL
+- Types feel natural and run at runtime
+
+### 🔍 Deep introspectability
+
+- Built on set theory
+- Handles unions, intersections, literals, ranges, regex patterns
+- Ideal for advanced constraints
+
+### 🧩 Rich expressions
+
+- Literal values
+- Value ranges
+- Regex patterns
+- Discriminated unions
+- Recursive structures
+
+### 🛠️ Customizable errors
+
+- Concise, precise, linked to type definitions
+- Full messaging control for UX or logs
+
+---
+
+## Performance in practice
+
+```ts
+const check = type("string|number\[]");
+
+check("hello"); // ✅
+check(\[1, 2, 3]); // ✅
+check({}); // ❌ Error: Expected string or array of numbers
+```
+
+Minimal allocations, optimized validator.
+
+## Zod vs ArkType Quick Look
+
+- Zod: stable, easy, large ecosystem
+- Yup: slow, simple
+- ArkType: fast, expressive, type-aligned
+
+**Pick Zod** for stability. **Pick ArkType** for speed and advanced runtime type fidelity. Both can coexist.
+
+## When not to use ArkType?
+
+- Extremely tight bundles? Benchmark first
+- Locked into JSON Schema/Joi/Zod workflows? Migration required
+- Still pre 1.0, API may change
+
+## Real-World Integrations
+
+Express.js:
+
+```ts
+import express from "express";
+import { type } from "arktype";
+
+const app = express();
+app.use(express.json());
+
+const createUserBody = type({
+  name: "string",
+  email: "string.email",
+  age: "number>=18",
+});
+
+app.post("/users", (req, res) => {
+  const body = createUserBody(req.body);
+  if (body instanceof type.errors)
+    return res.status(400).json({ errors: body.summary });
+  res.json({ user: body });
+});
+```
+
+React Hook Form:
+
+```ts
+import { useForm } from "react-hook-form";
+import { type } from "arktype";
+const loginSchema = type({ email: "string.email", password: "string>=8" });
+function LoginForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data: unknown) => {
+    const validated = loginSchema(data);
+    if (validated instanceof type.errors) return;
+  };
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      \<input {...register("email")} />
+      {errors.email && <span>{errors.email.message}</span>}
+    </form>
+  );
+}
+```
+
+## Bottom Line
+
+ArkType is not just another validation library. It's **fast, expressive, and type-safe at runtime**. Stick with Zod for stability, but try ArkType for performance-sensitive workloads or advanced type-level validation.

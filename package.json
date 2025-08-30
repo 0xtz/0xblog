@@ -44,5 +44,5 @@
     "typescript": "^5.9.2",
     "ultracite": "5.1.2"
   },
-  "packageManager": "pnpm@10.14.0"
+  "packageManager": "pnpm@10.15.0"
 }
