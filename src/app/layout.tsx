@@ -3,6 +3,7 @@ import { Geist_Mono, Martian_Mono } from "next/font/google"
 
 import "./globals.css"
 import dynamic from "next/dynamic"
+import Script from "next/script"
 import NavBar from "@/components/nav-bar"
 import { defaultSEO } from "@/lib/seo"
 import { ThemeProvider } from "@/providers/theme-provider"
@@ -48,6 +49,15 @@ export default function RootLayout({
 
           <AppFooter />
         </ThemeProvider>
+
+        {/* Cloudflare Web Analytics */}
+        <Script
+          data-cf-beacon='{"token": "eef1bf3597884ff3903b4a629f5301e4"}'
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          strategy="afterInteractive"
+          type="text/javascript"
+        />
       </body>
     </html>
   )
