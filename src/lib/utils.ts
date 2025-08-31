@@ -39,4 +39,4 @@ export function stripMarkdown(text: string): string {
   )
 }
 
-export const BASE_URL = "https://blog.0xtz.me/"
+export const BASE_URL = "https://blog.0xtz.me"
