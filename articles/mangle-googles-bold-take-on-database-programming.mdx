@@ -1,0 +1,63 @@
+---
+title: "Mangle: Google's Bold Take on Database Programming"
+category: "tech"
+date: "08-09-2025"
+---
+
+# Mangle: Google's Bold Take on Database Programming
+
+Google introduced [Mangle](https://github.com/google/mangle), a new open-source programming language that extends the classic logic-based language [Datalog](https://en.wikipedia.org/wiki/Datalog) for modern **deductive databases**.
+
+Implemented as a `Go` package, Mangle is designed to make it easier to query and reason about data spread across multiple sources.
+
+At its core, Mangle builds on Datalog, a declarative logic programming language with roots in database theory. While traditional Datalog is powerful for expressing complex queries, it often lacks features needed for real-world applications. Mangle bridges this gap by introducing practical extensions while keeping the accessibility and simplicity of its predecessor.
+
+## Key Features and Extensions
+
+Mangle enhances Datalog with features that are essential for modern development, security, and data analysis:
+
+### Recursive Rules
+
+A hallmark of Datalog, fully supported in Mangle. Recursive rules allow developers to express transitive relationships, like tracing a project's dependency tree or mapping access rights across a hierarchy.
+
+### Uniform Data Access
+
+Mangle can treat multiple data sources as one logical database. It can pull facts from files, APIs, or databases, letting developers join information seamlessly without worrying about where it comes from.
+
+### Aggregation and Function Calls
+
+Mangle supports aggregation functions (e.g., `count`, `sum`) and external function calls.
+This makes it easier to run computations and integrate logical queries with existing code or business logic.
+
+
+### Optional Type Checking
+
+Unlike plain Datalog, Mangle gives developers the option to add type safety when needed. This helps balance flexibility with reliability, especially for larger projects.
+
+## Practical Applications
+
+Mangle is not just a research toy—it's useful for real-world problems:
+
+### Vulnerability Detection
+
+Security teams can write rules like: *a project is vulnerable if it depends on a library with a known CVE*. Mangle can then recursively scan dependency graphs to flag issues. This makes it great for software supply chain security.
+
+### Software Dependency Analysis
+
+Mangle is a natural fit for analyzing [Software Bill of Materials (SBOMs)](https://www.cisa.gov/sbom). It can help enforce versioning policies, detect deprecated libraries, or find projects relying on outdated dependencies.
+
+### Knowledge Graph Modeling
+
+Mangle works well with knowledge graphs. By representing entities and relationships as logical facts, developers can uncover hidden connections and run advanced reasoning over complex datasets.
+
+## Implementation and Developer Accessibility
+
+Mangle is shipped as a [Go library](https://pkg.go.dev/github.com/google/mangle). This means developers can embed it directly into apps and tools—no need for a separate runtime or database. The approach keeps things lightweight while putting deductive querying directly in the hands of developers.
+
+It's worth noting that Google clearly states: *“This is not an officially supported Google product.”* So it's experimental, but still a powerful tool for anyone exploring deductive database programming.
+
+---
+
+In short: Mangle combines the elegance of Datalog with the practical features needed today. Whether you're a developer, SRE, or security engineer, it opens up new ways to reason about messy, distributed information—from vulnerabilities to knowledge graphs.
+
+👉 [Check out the GitHub repo here](https://github.com/google/mangle).
