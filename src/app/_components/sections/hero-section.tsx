@@ -12,6 +12,7 @@ export default function HeroSection() {
           alt="background"
           className="opacity-90 [mask-image:radial-gradient(75%_75%_at_center,white,transparent)]"
           fill
+          priority
           // spacial thanks to ShadcnBlocks 🙏🙏🙏
           src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/patterns/square-alt-grid.svg"
         />

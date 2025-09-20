@@ -18,7 +18,7 @@ export default function ArticleListItem({ article }: { article: TArticle }) {
         </Badge>
 
         <Link
-          aria-label={`Read ${article.title}`}
+          aria-label={`Read the full article ${article.title}`}
           className="fade-in transition-opacity duration-200 hover:opacity-70"
           href={`/articles/${article.id}`}
         >
@@ -36,7 +36,7 @@ export default function ArticleListItem({ article }: { article: TArticle }) {
         <ViewTransition exit="auto" name={`article-list-title-${article.id}`}>
           <h3 className="text-balance font-semibold text-lg hover:underline md:text-xl">
             <Link
-              aria-label={`Read ${article.title}`}
+              aria-label={`Read the full article ${article.title}`}
               href={`/articles/${article.id}`}
             >
               {article.title}
@@ -53,11 +53,11 @@ export default function ArticleListItem({ article }: { article: TArticle }) {
 
       <CardFooter className="flex-shrink-0">
         <Link
-          aria-label={`Read ${article.title}`}
+          aria-label={`Read the full article ${article.title}`}
           className="flex items-center text-foreground hover:underline"
           href={`/articles/${article.id}`}
         >
-          Read more
+          Read full article
           <ArrowRight className="ml-2 size-4" />
         </Link>
       </CardFooter>
