@@ -2,6 +2,19 @@ import type { Metadata } from "next"
 import type { TArticle } from "./types"
 import { BASE_URL } from "./utils"
 
+// Pre-compiled regex patterns for better performance
+const FRONTMATTER_REGEX = /^---[\s\S]*?---\n/
+const HEADER_REGEX = /^#{1,6}\s+.*/gm
+const CODE_BLOCK_REGEX = /```[\s\S]*?```/g
+const INLINE_CODE_REGEX = /`[^`]+`/g
+const LINK_REGEX = /\[([^\]]+)\]\([^)]+\)/g
+const IMAGE_REGEX = /!\[([^\]]*)\]\([^)]+\)/g
+const BOLD_REGEX = /\*\*([^*]+)\*\*/g
+const ITALIC_REGEX = /\*([^*]+)\*/g
+const UNDERLINE_BOLD_REGEX = /__([^_]+)__/g
+const UNDERLINE_ITALIC_REGEX = /_([^_]+)_/g
+const WHITESPACE_REGEX = /\s+/g
+
 // Default SEO configuration
 export const defaultSEO: Metadata = {
   title: {
@@ -77,18 +90,23 @@ export const defaultSEO: Metadata = {
 // Generate SEO metadata for individual articles
 export function generateArticleSEO(article: TArticle): Metadata {
   const articleUrl = `${BASE_URL}/articles/${article.id}`
-  const articleDescription = article.content
-    ? `${article.content
-        .replace(/<[^>]*>/g, "")
-        .replace(/\s+/g, " ")
-        .trim()
-        .slice(0, 160)}...`
-    : `Read about ${article.title} on 0xBlog`
+  const finalDescription = generateSEOFriendlyDescription(
+    article.content,
+    article.title,
+    article.category
+  )
 
   return {
     title: article.title,
-    description: articleDescription,
-    keywords: [article.category, "web development", "tech", "blog"],
+    description: finalDescription,
+    keywords: [
+      article.category,
+      "web development",
+      "programming",
+      "tech blog",
+      "tutorials",
+      article.title.toLowerCase().split(" ").slice(0, 3).join(" "),
+    ].filter(Boolean),
     authors: [{ name: "0xtz" }],
     alternates: {
       canonical: articleUrl,
@@ -97,7 +115,7 @@ export function generateArticleSEO(article: TArticle): Metadata {
       type: "article",
       url: articleUrl,
       title: article.title,
-      description: articleDescription,
+      description: finalDescription,
       siteName: "0xBlog",
       publishedTime: article.date,
       authors: ["0xtz"],
@@ -114,7 +132,7 @@ export function generateArticleSEO(article: TArticle): Metadata {
     twitter: {
       card: "summary_large_image",
       title: article.title,
-      description: articleDescription,
+      description: finalDescription,
       images: [`${BASE_URL}/api/og?title=${encodeURIComponent(article.title)}`],
       creator: "@0xtz_",
     },
@@ -168,17 +186,17 @@ export function generateArticlesListSEO(): Metadata {
 
 // Generate structured data for articles
 export function generateArticleStructuredData(article: TArticle) {
+  const finalDescription = generateSEOFriendlyDescription(
+    article.content,
+    article.title,
+    article.category
+  )
+
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: article.title,
-    description: article.content
-      ? `${article.content
-          .replace(/<[^>]*>/g, "")
-          .replace(/\s+/g, " ")
-          .trim()
-          .slice(0, 160)}...`
-      : `Read about ${article.title} on 0xBlog`,
+    description: finalDescription,
     image: `${BASE_URL}/api/og?title=${encodeURIComponent(article.title)}`,
     author: {
       "@type": "Person",
@@ -259,4 +277,80 @@ export function generateBreadcrumbStructuredData(article?: TArticle) {
     "@type": "BreadcrumbList",
     itemListElement: baseBreadcrumbs,
   }
+}
+
+// Utility function to extract clean content for SEO descriptions
+function extractCleanContent(
+  content: string | undefined,
+  maxLength = 155
+): string {
+  if (!content) {
+    return ""
+  }
+
+  const cleanContent = content
+    // Remove frontmatter if present
+    .replace(FRONTMATTER_REGEX, "")
+    // Remove markdown headers
+    .replace(HEADER_REGEX, "")
+    // Remove code blocks
+    .replace(CODE_BLOCK_REGEX, "")
+    // Remove inline code
+    .replace(INLINE_CODE_REGEX, "")
+    // Remove links but keep text
+    .replace(LINK_REGEX, "$1")
+    // Remove images
+    .replace(IMAGE_REGEX, "")
+    // Remove emphasis markers
+    .replace(BOLD_REGEX, "$1")
+    .replace(ITALIC_REGEX, "$1")
+    .replace(UNDERLINE_BOLD_REGEX, "$1")
+    .replace(UNDERLINE_ITALIC_REGEX, "$1")
+    // Clean up extra whitespace
+    .replace(WHITESPACE_REGEX, " ")
+    .trim()
+
+  // Return truncated content if too long
+  if (cleanContent.length > maxLength) {
+    return `${cleanContent.slice(0, maxLength).trim()}...`
+  }
+
+  return cleanContent
+}
+
+// Utility function to generate SEO-friendly description with fallbacks
+function generateSEOFriendlyDescription(
+  content: string | undefined,
+  title: string,
+  category: string
+): string {
+  const cleanContent = extractCleanContent(content)
+
+  // Try to use clean content first
+  if (cleanContent && cleanContent.length >= 30) {
+    return cleanContent
+  }
+
+  // Fallback descriptions based on category
+  const categoryDescriptions: Record<string, string> = {
+    tech: "Discover the latest trends, tips, and best practices in modern web development and technology.",
+    database:
+      "Learn about database design, optimization, and best practices for modern applications.",
+    programming:
+      "Explore programming concepts, algorithms, and development techniques.",
+    tutorial:
+      "Follow step-by-step tutorials and guides for web development and programming.",
+  }
+
+  const categoryDesc =
+    categoryDescriptions[category.toLowerCase()] ||
+    "Discover insights and best practices in modern web development and technology."
+
+  // If we have minimal clean content, combine it with category description
+  if (cleanContent && cleanContent.length > 10) {
+    return `${cleanContent} ${categoryDesc.toLowerCase()}`
+  }
+
+  // Final fallback
+  return `${title} - ${categoryDesc}`
 }
