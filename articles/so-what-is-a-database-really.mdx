@@ -1,0 +1,87 @@
+---
+title: "So... what is a database really? 🤔"
+category: "tech"
+date: "20-09-2025"
+---
+
+i see aloot of developers only care about **languages** and frameworks, discussing apis and design patterns, but often neglect whats behind. its something deeper - not just storing data. it _organizes all life_, from your daily routine to your money and transactions 💸.
+
+---
+
+A Database, from punch cards 👉 to vectors, airline mainframes ✈️ to quantum storage ⚛️. but most devs barely scratch the surface of what a database really is.
+
+in this article, we will explore the most important system in CS, and why it is crucial for modern applications.
+
+---
+
+some people think the data started to become importante only after the web era 🌐 and social media + ads etc. but it was actually much earlier than that.
+
+`IDS` (_integrated data store_) becomes the **first true database system**, using records to organize data, and providing a structured way to access and manipulate it.
+
+then came **[Sabre](https://en.wikipedia.org/wiki/Sabre_%28computer_system%29)**, the airline system, and after a while people started realizing the importance of data... who controls data can literally control the world 🌍.
+
+---
+
+1970 → the database world is ready for an evolution from _Edgar Frank Codd_, a mathematician who was asking: “why are things done the wrong way?” bc it was complex, fragile, and a small change could ruin everything. his solution was simple - and it’s what we still see in today’s relational databases: storing data in rows + cols, not hierarchies. letting users describe **what** they want and not **how** to get it.
+
+---
+
+and the question now is? how can non-programmers query a database?
+👉 the answer is **SQL**.
+
+```sql
+SELECT customer_name FROM orders WHERE amount > 699;
+```
+
+reads like english but under the hood its math ⚡. scanning millions of rows in seconds.
+
+---
+
+**System R** by IBM 🏢 comes in. and at the same time **Ingres** at Berkeley 🎓. both proving that Codd's vision is the future. relational model is flexible + powerful.
+
+but IBM didnt wanna commercialize it bc it was making them tons of money with the old systems.
+
+then **Larry Ellison** 📖 reads Codd’s papers and studies System R research. he sees the opportunity. him and his colleagues build the first commercial database while staying compatible with IBM’s SQL. racing with a tiny team against IBM’s money. in 1979 they ship **Oracle** 🚀.
+
+---
+
+**Sybase** also joins the game. bringing the _client-server_ model. IBM too big, Oracle too fast. the database wars 🔥.
+
+1986 → the American National Standards Institute adopts SQL as the official standard. what started as IBM’s SQL becomes the **universal language of data**. this changes everything: now apps can query data, devs don’t need new languages when switching jobs. relational model is not just winning - it’s conquering 🏆.
+
+---
+
+1990s → new forces emerging. the **WWW** introduces a new world needing more than relational tables. from media to hyperlinks. problem: _impedance mismatch_. code thinks in objects, DB thinks in rows + cols. transformation is pain. object databases try to fix it, but become just a footnote in history. silenced by the universal SQL.
+
+---
+
+2000s → new issue: **scaling** 📈.
+Google + Amazon are processing tremendous data daily - more than most orgs in a lifetime. traditional DBs designed for one server start crashing 💥.
+
+- 2006 → Google publishes the [BigTable paper](https://research.google/pubs/pub27898/).
+- 2007 → Amazon publishes the [Dynamo paper](https://www.allthingsdistributed.com/2007/10/amazons_dynamo.html).
+
+not just research - **blueprints** of a new data era. facebook builds Cassandra. now ACID vs BASE. SQL vs NoSQL ⚔.
+
+---
+
+today we don’t use a single DB anymore. instead we mix:
+
+- **Postgres** for transactions ✅
+- **Redis** for caching ⚡
+- **Elasticsearch** for search 🔍
+- **Neo4j** for recommendations 🕸️
+
+and with AI 🤖 the need for new storage types emerges. embeddings to store images, videos, audio, text, and more. now we have key-value stores, document stores, graph DBs, time-series DBs... the **one-fits-all era is over**.
+
+---
+
+today, databases are not just “where data sleeps” but _where intelligence is born_.
+your phone tracking your steps 📱, Spotify recommending songs 🎶, self-driving cars predicting moves 🚗, even ChatGPT answering you rn - all powered by databases hidden in the stack.
+
+so when you think of a database, don’t think just “tables” or “storage”.
+think of it as the invisible engine ⚙️ that runs everything digital. from airline tickets in the 60s → web2 ads → AI models in 2025 and beyond 🚀
+
+---
+
+👉 in the next blog posts ill talk about how databases work internally. starting from Mysql → Postgres. then dive into NoSQL DBs like MongoDB and Cassandra.
